@@ -54,5 +54,31 @@
 ```
 ↑ こんな感じでそれより下のcompoenentでuseContextを使った場合、namespace的な状態を作ることができる(componentによって値が変わる)
 
+> This example uses heading levels because they show visually how nested components can override context. But context is useful for many other use cases too. You can pass down any information needed by the entire subtree: the current color theme, the currently logged in user, and so on.
+
+colorテーマとかloginとかのグローバルで持つようなものにも全然使える
+
+> How context works might remind you of CSS property inheritance. In CSS, you can specify color: blue for a `<div>`, and any DOM node inside of it, no matter how deep, will inherit that color unless some other DOM node in the middle overrides it with color: green. Similarly, in React, the only way to override some context coming from above is to wrap children into a context provider with a different value.
+
+contextは下のコンポーネントで継承される(CSSと同じような感じ)
+もし、overrideしたかったら異なる値でdataProviderを使うしかない
+
+> In CSS, different properties like color and background-color don’t override each other. You can set all  `<div>`’s color to red without impacting background-color. Similarly, different React contexts don’t override each other. Each context that you make with createContext() is completely separate from other ones, and ties together components using and providing that particular context. One component may use or provide many different contexts without a problem.
+
+contextが複数あっても、同じcontextでない限りは共存できる(color theme用のcontextとlogin用のcontextを共存させることももちろんできる)
+
+- `Before you use context`
+  - Start by passing props. If your components are not trivial, it’s not unusual to pass a dozen props down through a dozen components. It may feel like a slog, but it makes it very clear which components use which data! The person maintaining your code will be glad you’ve made the data flow explicit with props
+  - Extract components and pass JSX as children to them. If you pass some data through many layers of intermediate components that don’t use that data (and only pass it further down), this often means that you forgot to extract some components along the way. For example, maybe you pass data props like posts to visual components that don’t use them directly, like <Layout posts={posts} />. Instead, make Layout take children as a prop, and render <Layout><Posts posts={posts} /></Layout>. This reduces the number of layers between the component specifying the data and the one that needs it.
+  - **If neither of these approaches works well for you, consider context.**
+- `Use cases for context`
+  - Theming: If your app lets the user change its appearance (e.g. dark mode), you can put a context provider at the top of your app, and use that context in components that need to adjust their visual look.
+  - Current account: Many components might need to know the currently logged in user. Putting it in context makes it convenient to read it anywhere in the tree. Some apps also let you operate multiple accounts at the same time (e.g. to leave a comment as a different user). In those cases, it can be convenient to wrap a part of the UI into a nested provider with a different current account value.
+  - Routing: Most routing solutions use context internally to hold the current route. This is how every link “knows” whether it’s active or not. If you build your own router, you might want to do it too.
+  - Managing state: As your app grows, you might end up with a lot of state closer to the top of your app. Many distant components below may want to change it. It is common to use a reducer together with context to manage complex state and pass it down to distant components without too much hassle.
+
+> Context is not limited to static values. **If you pass a different value on the next render, React will update all the components reading it below!** This is why context is often used in combination with state.
+
+↑ contextの値が変われば、それ以下のcomponentは再レンダリングする(ここでいうレンダリングはペインティングではなく、再計算の意味)
 
 ## Redux vs Context API

@@ -81,4 +81,18 @@ contextが複数あっても、同じcontextでない限りは共存できる(co
 
 ↑ contextの値が変われば、それ以下のcomponentは再レンダリングする(ここでいうレンダリングはペインティングではなく、再計算の意味)
 
-## Redux vs Context API
+## Redux vs Context API (and Other state management library)
+https://dev.to/ruppysuppy/redux-vs-context-api-when-to-use-them-4k3p
+https://zenn.dev/luvmini511/articles/61e8e54853bc13
+
+
+- Reduxは外部ストア的なのを1つしか持てない一方で、ContextAPIは複数持つことができる
+
+- Jotai
+  - https://jotai.org/docs/basics/comparison
+
+> To tackle this issue with React context (useContext + useState), one would require many contexts and face some issues.
+
+=> useContextとuseStateによるre-renderingを抑制するために生まれてるくさい
+
+> Jotai takes a **bottom-up** approach with the atomic model, inspired by Recoil. One can build state combining atoms, and optimize renders based on atom dependency. This avoids the need for memoization.

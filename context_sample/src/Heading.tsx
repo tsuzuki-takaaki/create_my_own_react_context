@@ -1,9 +1,9 @@
-interface Props {
-  level: number
-  children: string
-}
+import { useContext } from "react";
+import { LevelContext } from "./LevelContext";
 
-export const Heading = ({ level, children }: Props) => {
+export const Heading = ({ children }: any) => {
+  const level = useContext(LevelContext);
+
   switch (level) {
     case 1:
       return <h1>{children}</h1>;

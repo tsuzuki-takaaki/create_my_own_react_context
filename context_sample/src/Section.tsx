@@ -1,7 +1,11 @@
-export const Section = ({ children }: any) => {
+import { LevelContext } from "./LevelContext";
+
+export const Section = ({ children, level }: any) => {
   return (
     <section className="section">
-      {children}
+      <LevelContext.Provider value={level}>
+        {children}
+      </LevelContext.Provider>
     </section>
   );
 }
